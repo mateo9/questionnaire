@@ -6,9 +6,9 @@ rescue LoadError
   puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
 end
 
+# rake, rdoc and testtask
 require 'rake'
 require 'rdoc/task'
-
 require 'rake/testtask'
 
 Rake::TestTask.new(:test) do |t|
@@ -20,6 +20,7 @@ end
 
 task :default => :test
 
+# RDocTask
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title    = 'Survey'

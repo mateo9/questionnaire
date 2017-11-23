@@ -57,6 +57,7 @@ class User < ActiveRecord::Base
   #... (your code) ...
 end
 ```
+
 There is the concept of participant, in our example we choose the User Model.
 Every participant can respond to surveys and every response is registered as a attempt.
 By default, survey logic assumes an infinite number of attempts per participant
@@ -96,7 +97,7 @@ class ContestsController < ApplicationController
       render :action => :new
     end
   end
-  
+
   #######
   private
   #######
@@ -109,20 +110,20 @@ class ContestsController < ApplicationController
       params.require(:survey_attempt).permit(answers_attributes: [:id, :question_id, :option_id, :option_text, :option_number, :predefined_value_id, :_destroy, :finished])
     end
   end
-  
+
 end
 ```
 
 ## Survey inside your Views
 
-### Controlling Survey avaliability per participant
-To control which page participants see you can use method `avaliable_for_participant?`
+### Controlling Survey availability per participant
+To control which page participants see you can use method `available_for_participant?`
 that checks if the participant already spent his attempts.
 ```erb
 <h3><%= flash[:alert]%></h3>
 <h3><%= flash[:error]%></h3>
 
-<% if @survey.avaliable_for_participant?(@participant) %>
+<% if @survey.available_for_participant?(@participant) %>
   <%= render 'form' %>
 <% else %>
   <p>
@@ -146,8 +147,8 @@ that checks if the participant already spent his attempts.
             <p><span><%= "#{question.head_number} : " if question.head_number %></span><%= question.text %></p>
             <p><%= question.description if question.description %></p>
             <% question.options.each do |option| %>
-              
-              
+
+
               <% if option.options_type_id == Survey::OptionsType.multi_choices %>
                 <%= hidden_field_tag "survey_attempt[answers_attributes][#{seq}][question_id]", question.id %>
                 <%= check_box_tag "survey_attempt[answers_attributes][#{seq}][option_id]", option.id %>
@@ -166,7 +167,7 @@ that checks if the participant already spent his attempts.
                 <%= text_field_tag "survey_attempt[answers_attributes][#{seq}][option_text]", "" %>
                 <% seq += 1 %>
               <% end %>
-              
+
               <%= option.text %> <br/>
             <% end -%>
           </li>
@@ -220,7 +221,7 @@ user_highest_score  = survey_answers.for_participant(@user).high_score
 #check the highest score made for this survey
 global_highest_score = survey_answers.high_score
 ```
-# Compability 
+# Compatibility
 ### Rails
 Survey supports Rails 3 and 4. For use in Rails 4 without using protected_attributes gem.
 Rails 4 support is recent, so some minor issues may still be present, please report them.
@@ -232,5 +233,3 @@ Only support versions of Active Admin higher than 0.3.1.
 - Modified by [Dr-Click](http://github.com/dr-click)
 - Copyright © 2013 [Runtime Revolution](http://www.runtime-revolution.com), released under the MIT license.
 - This repository was forked from the original one : https://github.com/runtimerevolution/survey
- 
-
